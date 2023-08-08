@@ -33,3 +33,10 @@ class Route(models.Model):
     source = models.ForeignKey(Station, on_delete=models.CASCADE)
     destination = models.ForeignKey(Station, on_delete=models.CASCADE)
     distance = models.PositiveIntegerField()
+
+
+class Trip(models.Model):
+    route = models.ForeignKey(Route, on_delete=models.CASCADE)
+    train = models.ForeignKey(Train, on_delete=models.DO_NOTHING)
+    departure_time = models.DateTimeField()
+    arrival_time = models.DateTimeField()

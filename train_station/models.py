@@ -40,3 +40,9 @@ class Trip(models.Model):
     train = models.ForeignKey(Train, on_delete=models.DO_NOTHING)
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
+
+
+class Crew(models.Model):
+    firs_name = models.CharField(max_length=63)
+    last_name = models.CharField(max_length=63)
+    trip = models.ManyToManyField(Trip, related_name="crews")

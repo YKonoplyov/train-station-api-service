@@ -9,4 +9,12 @@ class TrainType(models.Model):
         return self.name
 
 
-
+class Train(models.Model):
+    name = models.CharField(max_length=255)
+    cargo_num = models.IntegerField(
+        MinValueValidator(1)
+    )
+    places_in_cargo = models.IntegerField(
+        MinValueValidator(1)
+    )
+    train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)

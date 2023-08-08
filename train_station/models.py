@@ -24,3 +24,12 @@ class Station(models.Model):
     name = models.CharField(max_length=255, unique=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=5)
     longitude = models.DecimalField(max_digits=8, decimal_places=5)
+
+    def __str__(self):
+        return self.name
+
+
+class Route(models.Model):
+    source = models.ForeignKey(Station, on_delete=models.CASCADE)
+    destination = models.ForeignKey(Station, on_delete=models.CASCADE)
+    distance = models.PositiveIntegerField()

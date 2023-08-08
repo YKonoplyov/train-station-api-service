@@ -18,3 +18,9 @@ class Train(models.Model):
         MinValueValidator(1)
     )
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
+
+
+class Station(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    latitude = models.DecimalField(max_digits=8, decimal_places=5)
+    longitude = models.DecimalField(max_digits=8, decimal_places=5)

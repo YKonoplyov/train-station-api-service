@@ -7,7 +7,6 @@ from user.serializers import UserSerializer
 
 
 class CreateUserView(CreateAPIView):
-
     serializer_class = UserSerializer
 
 

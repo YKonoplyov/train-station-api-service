@@ -10,4 +10,4 @@ admin.site.unregister(Group)
 
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    ordering = ("email", )
+    ordering = ("email",)

@@ -3,6 +3,7 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from train_station.models import TrainType, Train, Station, Route, Trip, Crew
+from train_station.permissions import IsAdminOrIfAuthenticatedReadOnly
 from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
                                       TrainListSerializer, StationSerializer,
                                       RouteSerializer, RouteListSerializer,
@@ -17,6 +18,7 @@ class TrainTypeViewSet(
 ):
     serializer_class = TrainTypeSerializer
     queryset = TrainType.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
 class TrainViewSet(
@@ -26,6 +28,7 @@ class TrainViewSet(
 ):
     serializer_class = TrainListSerializer
     queryset = Train.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -40,6 +43,7 @@ class StationViewSet(
 ):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
 class RouteViewSet(
@@ -49,6 +53,7 @@ class RouteViewSet(
 ):
     serializer_class = RouteListSerializer
     queryset = Route.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
     def get_serializer_class(self):
@@ -60,6 +65,7 @@ class RouteViewSet(
 class TripViewSet(ModelViewSet):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
     def get_queryset(self):
         queryset = self.queryset.select_related(
@@ -92,3 +98,4 @@ class TripViewSet(ModelViewSet):
 class CrewViewSet(ModelViewSet):
     serializer_class = CrewSerializer
     queryset = Crew.objects.all()
+    permission_classes = [IsAdminOrIfAuthenticatedReadOnly]

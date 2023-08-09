@@ -9,10 +9,7 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
         Ticket.validate_ticket(
-            attrs["cargo"],
-            attrs["seat"],
-            attrs["trip"].train,
-            ValidationError
+            attrs["cargo"], attrs["seat"], attrs["trip"].train, ValidationError
         )
         return data
 
@@ -26,7 +23,11 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ("id", "created_at", "tickets", )
+        fields = (
+            "id",
+            "created_at",
+            "tickets",
+        )
 
     def create(self, validated_data):
         with transaction.atomic():

@@ -28,7 +28,6 @@ class Train(models.Model):
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=create_train_image_path)
 
-
     def __str__(self):
         return self.name
 
@@ -44,43 +43,30 @@ class Station(models.Model):
 
 class Route(models.Model):
     source = models.ForeignKey(
-        Station,
-        on_delete=models.CASCADE,
-        related_name="source_routes"
+        Station, on_delete=models.CASCADE, related_name="source_routes"
     )
     destination = models.ForeignKey(
-        Station,
-        on_delete=models.CASCADE,
-        related_name="destination_routes"
+        Station, on_delete=models.CASCADE, related_name="destination_routes"
     )
     distance = models.PositiveIntegerField()
 
     @staticmethod
     def validate_route(source, destination, error_to_raise):
         if source.name == destination.name:
-            raise error_to_raise(
-                "Source and destination should be different places"
-            )
+            raise error_to_raise("Source and destination should be different places")
 
     def clean(self):
-        self.validate_route(
-            self.source,
-            self.destination,
-            ValidationError
-        )
+        self.validate_route(self.source, self.destination, ValidationError)
 
     def save(
-            self,
-            force_insert=False,
-            force_update=False,
-            using=None,
-            update_fields=None,
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
     ):
         self.full_clean()
-        return super(Route, self).save(
-            force_insert, force_update, using, update_fields
-        )
-
+        return super(Route, self).save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return f"{self.source}-{self.destination}"
@@ -98,28 +84,21 @@ class Trip(models.Model):
         if departure_time < now:
             raise error_to_raise("Departure time can`t be in the past")
         if departure_time > arrival_time:
-            raise error_to_raise(
-                "Departure time should be earlier than arrival time"
-            )
+            raise error_to_raise("Departure time should be earlier than arrival time")
 
     def clean(self):
-        self.validate_trip(
-            self.departure_time,
-            self.arrival_time,
-            ValidationError
-        )
+        self.validate_trip(self.departure_time, self.arrival_time, ValidationError)
 
     def save(
-            self,
-            force_insert=False,
-            force_update=False,
-            using=None,
-            update_fields=None,
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
     ):
         self.full_clean()
-        return super(Trip, self).save(
-            force_insert, force_update, using, update_fields
-        )
+        return super(Trip, self).save(force_insert, force_update, using, update_fields)
+
     def __str__(self):
         return (
             f"{self.departure_time} {self.route.source}-"

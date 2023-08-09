@@ -12,7 +12,6 @@ class OrderPagination(PageNumberPagination):
     max_page_size = 100
 
 
-
 class OrderViewSet(ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()

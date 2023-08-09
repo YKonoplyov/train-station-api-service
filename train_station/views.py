@@ -7,29 +7,28 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from train_station.models import TrainType, Train, Station, Route, Trip, Crew
 from train_station.permissions import IsAdminOrIfAuthenticatedReadOnly
-from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
-                                      TrainListSerializer, StationSerializer,
-                                      RouteSerializer, RouteListSerializer,
-                                      TripSerializer, TripListSerializer,
-                                      TripDetailSerializer, CrewSerializer,
-                                      TrainImageSerializer)
+from train_station.srializers import (
+    TrainTypeSerializer,
+    TrainSerializer,
+    TrainListSerializer,
+    StationSerializer,
+    RouteSerializer,
+    RouteListSerializer,
+    TripSerializer,
+    TripListSerializer,
+    TripDetailSerializer,
+    CrewSerializer,
+    TrainImageSerializer,
+)
 
 
-class TrainTypeViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    GenericViewSet
-):
+class TrainTypeViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = TrainTypeSerializer
     queryset = TrainType.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
-class TrainViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    GenericViewSet
-):
+class TrainViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = TrainListSerializer
     queryset = Train.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
@@ -45,7 +44,9 @@ class TrainViewSet(
         methods=["POST"],
         detail=True,
         url_path="upload-image",
-        permission_classes=[IsAdminUser, ]
+        permission_classes=[
+            IsAdminUser,
+        ],
     )
     def upload_image(self, request, pk=None):
         train = self.get_object()
@@ -57,25 +58,16 @@ class TrainViewSet(
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class StationViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    GenericViewSet
-):
+class StationViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
-class RouteViewSet(
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    GenericViewSet
-):
+class RouteViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = RouteListSerializer
     queryset = Route.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
-
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -102,9 +94,7 @@ class TripViewSet(ModelViewSet):
             queryset = queryset.filter(route__source__name__icontains=source)
 
         if destination:
-            queryset = queryset.filter(
-                route__destination__name__icontains=destination
-            )
+            queryset = queryset.filter(route__destination__name__icontains=destination)
 
         return queryset.distinct()
 

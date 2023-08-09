@@ -1,4 +1,6 @@
+
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from train_station.models import TrainType, Train, Station, Route, Trip, Crew
 
@@ -29,7 +31,14 @@ class StationSerializer(serializers.ModelSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
-
+    def validate(self, attrs):
+        data = super(RouteSerializer, self).validate(attrs=attrs)
+        Route.validate_route(
+            attrs["source"],
+            attrs["destination"],
+            ValidationError
+        )
+        return data
     class Meta:
         model = Route
         fields = "__all__"

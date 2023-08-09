@@ -16,12 +16,16 @@ class TrainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Train
-        fields = "__all__"
+        exclude = ("image", )
 
 
 class TrainListSerializer(TrainSerializer):
     train_type = TrainTypeSerializer(many=False, read_only=True)
 
+    class Meta:
+        model = Train
+        fields = "__all__"
+        read_only_fields = ("id", "image")
 
 class TrainImageSerializer(serializers.ModelSerializer):
     class Meta:

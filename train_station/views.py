@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import mixins, status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
@@ -10,7 +11,8 @@ from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
                                       TrainListSerializer, StationSerializer,
                                       RouteSerializer, RouteListSerializer,
                                       TripSerializer, TripListSerializer,
-                                      TripDetailSerializer, CrewSerializer)
+                                      TripDetailSerializer, CrewSerializer,
+                                      TrainImageSerializer)
 
 
 class TrainTypeViewSet(
@@ -35,12 +37,14 @@ class TrainViewSet(
     def get_serializer_class(self):
         if self.action == "list":
             return TrainListSerializer
+        if self.action == "upload_image":
+            return TrainImageSerializer
         return TrainSerializer
 
     @action(
-        method=["POST"],
+        methods=["POST"],
         detail=True,
-        url="upload-image",
+        url_path="upload-image",
         permission_classes=[IsAdminUser, ]
     )
     def upload_image(self, request, pk=None):

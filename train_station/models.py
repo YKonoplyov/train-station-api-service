@@ -2,7 +2,6 @@ import os.path
 import uuid
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -104,6 +103,7 @@ class Trip(models.Model):
             f"{self.departure_time} {self.route.source}-"
             f"{self.arrival_time} {self.route.destination}"
         )
+
 
 
 class Crew(models.Model):

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -104,6 +105,24 @@ class TripViewSet(ModelViewSet):
         if self.action == "retrieve":
             return TripDetailSerializer
         return TripSerializer
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "source",
+                type={"type": "string"},
+                description="Filter by train source (ex. ?source=Kyiv)",
+            ),
+            OpenApiParameter(
+                "destination",
+                type={"type": "string"},
+                description="Filter by train destination "
+                            "(ex. ?destination=Dnipro)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class CrewViewSet(ModelViewSet):

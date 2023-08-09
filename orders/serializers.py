@@ -9,20 +9,20 @@ class TicketSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         data = super(TicketSerializer, self).validate(attrs=attrs)
         Ticket.validate_ticket(
-            attrs["row"],
+            attrs["cargo"],
             attrs["seat"],
-            attrs["movie_session"].cinema_hall,
+            attrs["trip"].train,
             ValidationError
         )
         return data
 
     class Meta:
         model = Ticket
-        fields = "__all__"
+        fields = ("id", "cargo", "seat", "trip")
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    tickets = TicketSerializer
+    tickets = TicketSerializer(many=True, read_only=False, allow_empty=False)
 
     class Meta:
         model = Order

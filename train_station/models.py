@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class TrainType(models.Model):
@@ -83,6 +84,34 @@ class Trip(models.Model):
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
 
+    @staticmethod
+    def validate_trip(departure_time, arrival_time, error_to_raise):
+        now = timezone.now()
+        if departure_time < now:
+            raise error_to_raise("Departure time can`t be in the past")
+        if departure_time > arrival_time:
+            raise error_to_raise(
+                "Departure time should be earlier than arrival time"
+            )
+
+    def clean(self):
+        self.validate_trip(
+            self.departure_time,
+            self.arrival_time,
+            ValidationError
+        )
+
+    def save(
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
+    ):
+        self.full_clean()
+        return super(Trip, self).save(
+            force_insert, force_update, using, update_fields
+        )
     def __str__(self):
         return (
             f"{self.departure_time} {self.route.source}-"

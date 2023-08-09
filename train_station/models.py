@@ -23,12 +23,8 @@ def create_train_image_path(instance, filename):
 
 class Train(models.Model):
     name = models.CharField(max_length=255)
-    cargo_num = models.IntegerField(
-        MinValueValidator(1)
-    )
-    places_in_cargo = models.IntegerField(
-        MinValueValidator(1)
-    )
+    cargo_num = models.PositiveIntegerField()
+    places_in_cargo = models.PositiveIntegerField()
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to=create_train_image_path)
 

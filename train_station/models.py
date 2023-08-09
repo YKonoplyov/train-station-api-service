@@ -1,7 +1,11 @@
+import os.path
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class TrainType(models.Model):
@@ -9,6 +13,12 @@ class TrainType(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def create_train_image_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    filename = f"{slugify(instance.name)}-{uuid.uuid4()}{extension}"
+    return os.path.join("uploads/movies/", filename)
 
 
 class Train(models.Model):
@@ -20,6 +30,7 @@ class Train(models.Model):
         MinValueValidator(1)
     )
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.name

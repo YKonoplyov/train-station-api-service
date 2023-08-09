@@ -59,4 +59,6 @@ class Ticket(models.Model):
             force_insert, force_update, using, update_fields
         )
 
-
+    class Meta:
+        unique_together = ("trip", "cargo", "seat")
+        ordering = ["cargo", "seat"]

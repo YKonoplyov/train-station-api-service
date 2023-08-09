@@ -60,6 +60,19 @@ class Route(models.Model):
             ValidationError
         )
 
+    def save(
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
+    ):
+        self.full_clean()
+        return super(Route, self).save(
+            force_insert, force_update, using, update_fields
+        )
+
+
     def __str__(self):
         return f"{self.source}-{self.destination}"
 

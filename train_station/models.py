@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -36,14 +37,28 @@ class Route(models.Model):
     source = models.ForeignKey(
         Station,
         on_delete=models.CASCADE,
-        related_name="source"
+        related_name="source_routes"
     )
     destination = models.ForeignKey(
         Station,
         on_delete=models.CASCADE,
-        related_name="destination"
+        related_name="destination_routes"
     )
     distance = models.PositiveIntegerField()
+
+    @staticmethod
+    def validate_route(source, destination, error_to_raise):
+        if source.name == destination.name:
+            raise error_to_raise(
+                "Source and destination should be different places"
+            )
+
+    def clean(self):
+        self.validate_route(
+            self.source,
+            self.destination,
+            ValidationError
+        )
 
     def __str__(self):
         return f"{self.source}-{self.destination}"

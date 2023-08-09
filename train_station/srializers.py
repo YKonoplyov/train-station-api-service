@@ -58,3 +58,12 @@ class TripListSerializer(TripSerializer):
     class Meta:
         model = Trip
         fields = ("id", "departure_time", "arrival_time", "route", "train")
+
+
+class TripDetailSerializer(TripSerializer):
+    route = RouteListSerializer(read_only=True)
+    train = TrainSerializer(read_only=True)
+
+    class Meta:
+        model = Trip
+        fields = ("__all__")

@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from train_station.models import TrainType, Train
+from train_station.models import TrainType, Train, Station
 from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
-                                      TrainListSerializer, )
+                                      TrainListSerializer, StationSerializer, )
 
 
 class TrainTypeViewSet(
@@ -28,3 +28,12 @@ class TrainViewSet(
         if self.action == "list":
             return TrainListSerializer
         return TrainSerializer
+
+
+class StationViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
+    serializer_class = StationSerializer
+    queryset = Station.objects.all()

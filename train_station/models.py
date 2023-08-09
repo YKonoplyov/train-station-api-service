@@ -30,6 +30,7 @@ class Train(models.Model):
         MinValueValidator(1)
     )
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to=create_train_image_path)
 
 
     def __str__(self):

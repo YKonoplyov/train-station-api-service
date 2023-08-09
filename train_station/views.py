@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from train_station.models import TrainType, Train, Station, Route
+from train_station.models import TrainType, Train, Station, Route, Trip
 from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
                                       TrainListSerializer, StationSerializer,
-                                      RouteSerializer, RouteListSerializer)
+                                      RouteSerializer, RouteListSerializer,
+                                      TripSerializer)
 
 
 class TrainTypeViewSet(
@@ -52,3 +53,8 @@ class RouteViewSet(
         if self.action == "list":
             return RouteListSerializer
         return RouteSerializer
+
+
+class TripViewSet(ModelViewSet):
+    serializer_class = TripSerializer
+    queryset = Trip.objects.all()

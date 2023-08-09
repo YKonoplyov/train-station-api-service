@@ -54,7 +54,14 @@ class RouteListSerializer(RouteSerializer):
 
 
 class TripSerializer(serializers.ModelSerializer):
-
+    def validate(self, attrs):
+        data = super(TripSerializer, self).validate(attrs=attrs)
+        Trip.validate_trip(
+            attrs["departure_time"],
+            attrs["arrival_time"],
+            ValidationError
+        )
+        return data
     class Meta:
         model = Trip
         fields = "__all__"
@@ -63,6 +70,7 @@ class TripSerializer(serializers.ModelSerializer):
 class TripListSerializer(TripSerializer):
     route = serializers.CharField(source="route.__str__")
     train = serializers.CharField(source="train.__str__")
+
 
     class Meta:
         model = Trip

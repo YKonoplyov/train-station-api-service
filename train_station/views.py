@@ -6,7 +6,8 @@ from train_station.models import TrainType, Train, Station, Route, Trip
 from train_station.srializers import (TrainTypeSerializer, TrainSerializer,
                                       TrainListSerializer, StationSerializer,
                                       RouteSerializer, RouteListSerializer,
-                                      TripSerializer, TripListSerializer)
+                                      TripSerializer, TripListSerializer,
+                                      TripDetailSerializer)
 
 
 class TrainTypeViewSet(
@@ -62,4 +63,6 @@ class TripViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == "list":
             return TripListSerializer
+        if self.action == "retrieve":
+            return TripDetailSerializer
         return TripSerializer

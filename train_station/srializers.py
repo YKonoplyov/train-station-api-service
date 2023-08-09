@@ -49,3 +49,12 @@ class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = "__all__"
+
+
+class TripListSerializer(TripSerializer):
+    route = serializers.CharField(source="route.__str__")
+    train = serializers.CharField(source="train.__str__")
+
+    class Meta:
+        model = Trip
+        fields = ("id", "departure_time", "arrival_time", "route", "train")

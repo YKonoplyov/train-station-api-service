@@ -33,3 +33,12 @@ class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route
         fields = "__all__"
+
+
+class RouteListSerializer(RouteSerializer):
+    source_station = serializers.CharField(source="source.name")
+    destination_station = serializers.CharField(source="destination.name")
+
+    class Meta:
+        model = Route
+        fields = ("id", "distance", "source_station", "destination_station",)

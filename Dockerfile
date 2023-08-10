@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN mkdir -p/vol/web/media
+RUN mkdir -p /vol/web/media
 
 RUN adduser \
     --disabled-password\
@@ -19,6 +19,6 @@ RUN adduser \
     trainstation_user
 
 RUN chown -R trainstation_user /vol/
-RUN chmod -R 755/vol/web/
+RUN chmod -R 755 /vol/web/
 
 user trainstation_user

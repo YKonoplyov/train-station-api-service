@@ -126,3 +126,7 @@ SPECTACULAR_SETTINGS = {
         "defaultModelExpandDepth": 2,
     },
 }
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

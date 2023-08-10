@@ -105,9 +105,8 @@ class Trip(models.Model):
         )
 
 
-
 class Crew(models.Model):
-    firs_name = models.CharField(max_length=63)
+    first_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
     trip = models.ManyToManyField(Trip, related_name="crews")
 

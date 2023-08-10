@@ -200,6 +200,20 @@ class TripAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Trip.objects.count(), 1)
 
+    def test_update_trip(self):
+        url = reverse("train_station:trip-detail", args=[self.trip.id])
+        new_departure_time = self.trip.departure_time + timedelta(hours=1)
+        new_arrival_time = self.trip.arrival_time + timedelta(hours=3)
+        data = {
+            "departure_time": new_departure_time,
+            "arrival_time": new_arrival_time,
+        }
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.trip.refresh_from_db()
+        self.assertEqual(self.trip.departure_time, new_departure_time)
+        self.assertEqual(self.trip.arrival_time, new_arrival_time)
+
 
 class CrewAPITest(APITestCase):
     def setUp(self):

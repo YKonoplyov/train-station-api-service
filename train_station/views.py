@@ -31,7 +31,7 @@ class TrainTypeViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericVi
 
 class TrainViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = TrainListSerializer
-    queryset = Train.objects.all()
+    queryset = Train.objects.all().select_related("train_type")
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
     def get_serializer_class(self):
@@ -67,7 +67,7 @@ class StationViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericView
 
 class RouteViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     serializer_class = RouteListSerializer
-    queryset = Route.objects.all()
+    queryset = Route.objects.all().select_related("source", "destination")
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
     def get_serializer_class(self):
@@ -78,16 +78,15 @@ class RouteViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSe
 
 class TripViewSet(ModelViewSet):
     serializer_class = TripSerializer
-    queryset = Trip.objects.all()
+    queryset = Trip.objects.all().select_related(
+        "train",
+        "route__source",
+        "route__destination",
+    )
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
     def get_queryset(self):
-        queryset = self.queryset.select_related(
-            "train",
-            "route",
-            "route__source",
-            "route__destination",
-        )
+        queryset = self.queryset
         source = self.request.query_params.get("source")
         destination = self.request.query_params.get("destination")
 
@@ -116,8 +115,7 @@ class TripViewSet(ModelViewSet):
             OpenApiParameter(
                 "destination",
                 type={"type": "string"},
-                description="Filter by train destination "
-                            "(ex. ?destination=Dnipro)",
+                description="Filter by train destination " "(ex. ?destination=Dnipro)",
             ),
         ]
     )

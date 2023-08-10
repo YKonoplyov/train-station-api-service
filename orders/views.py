@@ -19,7 +19,9 @@ class OrderViewSet(ModelViewSet):
     pagination_class = OrderPagination
 
     def get_queryset(self):
-        return Order.objects.prefetch_related("tickets").filter(user=self.request.user)
+        return Order.objects.prefetch_related("tickets").filter(
+            user=self.request.user
+        )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

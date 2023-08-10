@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import mixins, status
 from rest_framework.decorators import action
@@ -23,13 +22,21 @@ from train_station.srializers import (
 )
 
 
-class TrainTypeViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+class TrainTypeViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
     serializer_class = TrainTypeSerializer
     queryset = TrainType.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
-class TrainViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+class TrainViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
     serializer_class = TrainListSerializer
     queryset = Train.objects.all().select_related("train_type")
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
@@ -59,13 +66,21 @@ class TrainViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSe
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class StationViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+class StationViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
 
 
-class RouteViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+class RouteViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericViewSet
+):
     serializer_class = RouteListSerializer
     queryset = Route.objects.all().select_related("source", "destination")
     permission_classes = [IsAdminOrIfAuthenticatedReadOnly]
@@ -94,7 +109,9 @@ class TripViewSet(ModelViewSet):
             queryset = queryset.filter(route__source__name__icontains=source)
 
         if destination:
-            queryset = queryset.filter(route__destination__name__icontains=destination)
+            queryset = queryset.filter(
+                route__destination__name__icontains=destination
+            )
 
         return queryset.distinct()
 
@@ -115,7 +132,9 @@ class TripViewSet(ModelViewSet):
             OpenApiParameter(
                 "destination",
                 type={"type": "string"},
-                description="Filter by train destination " "(ex. ?destination=Dnipro)",
+                description=(
+                    "Filter by train destination " "(ex. ?destination=Dnipro)"
+                ),
             ),
         ]
     )

@@ -169,12 +169,16 @@ class TripAPITest(APITestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_filter_by_source(self):
-        response = self.client.get(TRIP_LIST_URL, {"source": self.station1.name})
+        response = self.client.get(
+            TRIP_LIST_URL, {"source": self.station1.name}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
     def test_filter_by_destination(self):
-        response = self.client.get(TRIP_LIST_URL, {"destination": self.station2.name})
+        response = self.client.get(
+            TRIP_LIST_URL, {"destination": self.station2.name}
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 

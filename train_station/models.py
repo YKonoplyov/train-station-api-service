@@ -52,7 +52,9 @@ class Route(models.Model):
     @staticmethod
     def validate_route(source, destination, error_to_raise):
         if source.name == destination.name:
-            raise error_to_raise("Source and destination should be different places")
+            raise error_to_raise(
+                "Source and destination should be different places"
+            )
 
     def clean(self):
         self.validate_route(self.source, self.destination, ValidationError)
@@ -65,7 +67,9 @@ class Route(models.Model):
         update_fields=None,
     ):
         self.full_clean()
-        return super(Route, self).save(force_insert, force_update, using, update_fields)
+        return super(Route, self).save(
+            force_insert, force_update, using, update_fields
+        )
 
     def __str__(self):
         return f"{self.source}-{self.destination}"
@@ -83,10 +87,14 @@ class Trip(models.Model):
         if departure_time < now:
             raise error_to_raise("Departure time can`t be in the past")
         if departure_time > arrival_time:
-            raise error_to_raise("Departure time should be earlier than arrival time")
+            raise error_to_raise(
+                "Departure time should be earlier than arrival time"
+            )
 
     def clean(self):
-        self.validate_trip(self.departure_time, self.arrival_time, ValidationError)
+        self.validate_trip(
+            self.departure_time, self.arrival_time, ValidationError
+        )
 
     def save(
         self,
@@ -96,7 +104,10 @@ class Trip(models.Model):
         update_fields=None,
     ):
         self.full_clean()
-        return super(Trip, self).save(force_insert, force_update, using, update_fields)
+
+        return super(Trip, self).save(
+            force_insert, force_update, using, update_fields
+        )
 
     def __str__(self):
         return (

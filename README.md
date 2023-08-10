@@ -7,7 +7,6 @@ Train Station API Service is a Django-based RESTful API for managing train stati
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
-- [Authentication](#authentication)
 - [Contributing](#contributing)
 
 ## Introduction

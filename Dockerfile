@@ -21,4 +21,4 @@ RUN adduser \
 RUN chown -R trainstation_user /vol/
 RUN chmod -R 755 /vol/web/
 
-user trainstation_user
+user trainstation_user \
